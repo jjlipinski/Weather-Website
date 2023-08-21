@@ -13,11 +13,9 @@
               font-family: 'Brush Script MT', cursive;
               text-align: center;
             }
-
             .rowFuturePredictions {
                 font-size:15pt;
             }
-
             .toggle {
                 appearance: none;
                 width: 50px;
@@ -28,7 +26,6 @@
                 position: relative;
                 transition: all 0.5s;
             }
-     
             .toggle:after {
                 content: "°C";
                 position: absolute;
@@ -38,7 +35,6 @@
                 left: 53%;
                 z-index: 1;
             }
-
             .toggle:before {
                 content: "";
                 background: radial-gradient(#ffffff, #C0C0C0, #404040);
@@ -48,20 +44,16 @@
                 border-radius: 50%;
                 z-index: 2;
             }
-
             .toggle:checked {
                 background: #ddbaf5;
             }
-
             .toggle:checked::after {
                 content: "°F";
                 left: 15%;
             }
-
             .toggle:checked::before {
                 left:50%;
             }
-
             .WeatherAppContainer {
                 font-size: xx-large;
                 display: none;
@@ -76,9 +68,7 @@
                 <input type="text" id="cityName" required placeholder="Enter a City Name">
                 <button type="button" id="searchButton" onclick="callAPI()" style="margin-right: 10px;">Submit</button>
             </div>
-
             <div class="col-sm-4"></div>
-
             <div class="col-sm-3">
                 <div class="row">
                     <div>Celcius/Farenheight:</div><input id="checkbox" type="checkbox" class="toggle" style="margin-left: 10px;" onclick="updateTemperatures()">
@@ -102,15 +92,12 @@
                     <div class="FeelsLikeTempRow" id="feelsLikeTemp"></div>
                     <div class="CurrentLowHighRow" id="lowAndHighTemp"></div>
                 </div>
-
                 <div class="col-sm-4" id="code"><img id="weatherImage"></div>
-
                 <div class="col-sm-4">
                     <div class="row">
                         <div class="col-sm-2" id="humidityNum" style="margin-right: 10px;"></div>
                         <div class="col-sm-2" id="humidityWord"></div>
                     </div>
-
                     <div class="row">
                         <div class="col-sm-2"><img id="waterSymbol" style="width: 40px; height: 45px;"></div>
                         <div class="col-sm-2" id="precipitation"></div>
@@ -121,11 +108,9 @@
                     </div>
                 </div>
             </div>
-
             <div class="FutureForcastBanner">
                 <div class="col-sm-12" id="future" style="background-color:#d4cae2;text-align: center;"> 5 Day Forcast</div>
             </div>
-
             <div class="rowFuturePredictions">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-2" id="future1">
@@ -162,7 +147,6 @@
         ///////////////////////////
         // VARIABLES
         ///////////////////////////
-
         let address;
         let chanceOfRain;
         const date = new Date();
@@ -251,7 +235,7 @@
                 $("#lowAndHighTemp5").text(day5TempMinC + "-" + day5TempMaxC);
             }
         }
-
+        
         // Disable the toggle switch until a search is made.
         $("#checkbox").attr('disabled', 'true');
 
@@ -265,7 +249,6 @@
             fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + cityName + "?unitGroup=us&include=current&key=Y3Z2W6U2PPS3EZFMEV75UED6U&contentType=json")
               .then(response => response.json())
               .then(response => {
-
                 // Allow the toggle to change.
                 $("#checkbox").removeAttr('disabled');
 
@@ -278,7 +261,6 @@
                 ///////////////////////////
                 // GET API INFO
                 ///////////////////////////
-
                 address = response.resolvedAddress;
                 chanceOfRain = response.currentConditions.precipprob;
                 cloudCoverage = response.currentConditions.cloudcover;
@@ -310,7 +292,6 @@
                 ///////////////////////////
                 // C/F CALCULATIONS
                 ///////////////////////////
-
                 day1TempMaxF = Math.round(day1TempMax) + "°F";
                 day1TempMinF = Math.round(day1TempMin) + "°F";
                 day2TempMaxF = Math.round(day2TempMax) + "°F";
@@ -345,7 +326,6 @@
                 ///////////////////////////
                 // ADD API INFO TO GRID
                 ///////////////////////////
-
                 $("#humidityNum").text(Math.round(humidity) + "% ");
                 $("#humidityWord").text(" Humidity");
                 $("#location").text(address);
@@ -368,7 +348,6 @@
                 ////////////////////////////////
                 // ADD FUTURE API INFO TO GRID
                 ////////////////////////////////
-
                 // Based on the current day of the week, get the week abreviation from the daysOfTheWeek array.
                 // Sunday is 0, so subtract from any number higher than 6 to reset the array traversal.
                 for(let i = 1; i < 6; i++) {
