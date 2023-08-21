@@ -63,36 +63,45 @@
     <body>
         <div class="Header">
             <h1 style="color: #035681;">LunaStarWeather</h1>
+            <!-- Column to add white-space. -->
             <div class="col-sm-1"></div>
+            <!-- Column to enter the city name. -->
             <div class="col-sm-3">
                 <input type="text" id="cityName" required placeholder="Enter a City Name">
                 <button type="button" id="searchButton" onclick="callAPI()" style="margin-right: 10px;">Submit</button>
             </div>
+            <!-- Column to add white-space. -->
             <div class="col-sm-4"></div>
+            <!-- Column for the toggle switch. -->
             <div class="col-sm-3">
                 <div class="row">
                     <div>Celcius/Farenheight:</div><input id="checkbox" type="checkbox" class="toggle" style="margin-left: 10px;" onclick="updateTemperatures()">
                 </div>
             </div>
+            <!-- Column to add white-space. -->
             <div class="col-sm-1"></div>
         </div>
         
-        <!-- bootstrap has a dependency on JQuery-->
+        <!-- bootstrap has a dependency on JQuery. -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <!-- Latest compiled JavaScript -->
+        <!-- Latest compiled JavaScript. -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
         <div class="WeatherAppContainer" id="WeatherAppContainer">
             <div class="LocationBanner">
                 <div class="col-sm-12" id="location" style="background-color:#d4cae2;text-align: center;"></div>
             </div>
+            <!-- Row for current conditions. -->
             <div class="CurrentInformation">
+                <!-- Column for current temperatures. -->
                 <div class="col-sm-4">
                     <div class="ActualTempRow" id="actualTemp"></div>
                     <div class="FeelsLikeTempRow" id="feelsLikeTemp"></div>
                     <div class="CurrentLowHighRow" id="lowAndHighTemp"></div>
                 </div>
+                <!-- Column for the weather image. -->
                 <div class="col-sm-4" id="code"><img id="weatherImage"></div>
+                <!-- Column for humidity/precipitation/wind speed. -->
                 <div class="col-sm-4">
                     <div class="row">
                         <div class="col-sm-2" id="humidityNum" style="margin-right: 10px;"></div>
@@ -108,10 +117,12 @@
                     </div>
                 </div>
             </div>
+            <!-- Row for future conditions. -->
             <div class="FutureForcastBanner">
                 <div class="col-sm-12" id="future" style="background-color:#d4cae2;text-align: center;"> 5 Day Forcast</div>
             </div>
             <div class="rowFuturePredictions">
+                <!-- Column to add white-space. -->
                 <div class="col-sm-1"></div>
                 <div class="col-sm-2" id="future1">
                     <div class="FutureDay1" id="dayOfWeek1"></div>
@@ -138,6 +149,7 @@
                     <div class="FutureDay5HighLow" id="lowAndHighTemp5"></div>
                     <div class="FutureDay5Image" id="futureIcon5"><img id="futureWeatherImage5"></div>
                 </div>
+                <!-- Column to add white-space. -->
                 <div class="col-sm-1"></div>
             </div>
         </div>
@@ -150,7 +162,6 @@
         let address;
         let chanceOfRain;
         const date = new Date();
-        let currentTime = date.toISOString();
         let dayOfWeekNum = date.getDay();
         let daysOfTheWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
         let day1TempMax;
@@ -187,7 +198,6 @@
         let day5TempMinF;
         let day5TempMaxC;
         let day5TempMinC;
-        let hour = date.getUTCHours();
         let humidity;
         let icon;
         let temperature;
@@ -202,8 +212,6 @@
         let maxTemperatureC;
         let minTemperatureF;
         let maxTemperatureF;
-        let sunrise;
-        let sunset;
         let windSpeed;
 
         // Function to update units based on the C/F toggle.
