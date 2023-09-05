@@ -75,7 +75,7 @@
             <!-- Column for the toggle switch. -->
             <div class="col-sm-3">
                 <div class="row">
-                    <div>Celcius/Farenheight:</div><input id="checkbox" type="checkbox" class="toggle" style="margin-left: 10px;" onclick="updateTemperatures()">
+                    <div>Celcius/Farenheight:</div><input id="checkbox" type="checkbox" class="toggle" style="margin-left: 10px;" onclick="updateTemperatures(currentConditions, days)">
                 </div>
             </div>
             <!-- Column to add white-space. -->
@@ -215,32 +215,32 @@
         let windSpeed;
 
         // Function to update units based on the C/F toggle.
-        function updateTemperatures() {
+        function updateTemperatures(currentConditions, days) {
             // Farenheight is chosen.
             if($("#checkbox").prop("checked")) {
-                $("#actualTemp").text(temperatureF);
-                $("#feelsLikeTemp").text("Feels like:" + temperatureApparentF);
-                $("#lowAndHighTemp").text("Low: " + minTemperatureF + " - High: " + maxTemperatureF);   
-                $("#windSpeed").text(Math.round((windSpeed * 2.237)) + "mph");
+                $("#actualTemp").text(Math.round(currentConditions.temp) + "°F");
+                $("#feelsLikeTemp").text("Feels like:" + Math.round(currentConditions.feelslike) + "°F");
+                $("#lowAndHighTemp").text("Low: " + Math.round(days[0].tempmin) + "°F" + " - High: " + Math.round(days[0].tempmax) + "°F");   
+                $("#windSpeed").text(Math.round((currentConditions.windspeed * 2.237)) + "mph");
 
-                $("#lowAndHighTemp1").text(day1TempMinF + "-" + day1TempMaxF);
-                $("#lowAndHighTemp2").text(day2TempMinF + "-" + day2TempMaxF);
-                $("#lowAndHighTemp3").text(day3TempMinF + "-" + day3TempMaxF);
-                $("#lowAndHighTemp4").text(day4TempMinF + "-" + day4TempMaxF);
-                $("#lowAndHighTemp5").text(day5TempMinF + "-" + day5TempMaxF);
+                $("#lowAndHighTemp1").text(days[1].tempmin + "°F" + "-" + days[1].tempmax + "°F");
+                $("#lowAndHighTemp2").text(days[2].tempmin + "°F" + "-" + days[2].tempmax + "°F");
+                $("#lowAndHighTemp3").text(days[3].tempmin + "°F" + "-" + days[3].tempmax + "°F");
+                $("#lowAndHighTemp4").text(days[4].tempmin + "°F" + "-" + days[4].tempmax + "°F");
+                $("#lowAndHighTemp5").text(days[5].tempmin + "°F" + "-" + days[5].tempmax + "°F");
             }
             // Celcius is chosen.
             else  {
-                $("#actualTemp").text(temperatureC);
-                $("#feelsLikeTemp").text("Feels like:" + temperatureApparentC);
-                $("#lowAndHighTemp").text("Low: " + minTemperatureC + " - High: " + maxTemperatureC);
-                $("#windSpeed").text(Math.round((windSpeed * 3.6)) + "Km/hr");
+                $("#actualTemp").text(Math.round(((currentConditions.temp - 32) * 5)/9) + "°C");
+                $("#feelsLikeTemp").text("Feels like:" + Math.round(((currentConditions.feelslike - 32) * 5)/9) + "°C");
+                $("#lowAndHighTemp").text("Low: " + Math.round(days[0].tempmin) + "°C" + " - High: " + Math.round(days[0].tempmax) + "°C"); 
+                $("#windSpeed").text(Math.round((currentConditions.windspeed * 3.6)) + "Km/hr");
 
-                $("#lowAndHighTemp1").text(day1TempMinC + "-" + day1TempMaxC);
-                $("#lowAndHighTemp2").text(day2TempMinC + "-" + day2TempMaxC);
-                $("#lowAndHighTemp3").text(day3TempMinC + "-" + day3TempMaxC);
-                $("#lowAndHighTemp4").text(day4TempMinC + "-" + day4TempMaxC);
-                $("#lowAndHighTemp5").text(day5TempMinC + "-" + day5TempMaxC);
+                $("#lowAndHighTemp1").text(((days[1].tempmin - 32) * 5)/9 + "°C" + "-" + ((days[1].tempmax - 32) * 5)/9) + "°C";
+                $("#lowAndHighTemp2").text(((days[2].tempmin - 32) * 5)/9 + "°C" + "-" + ((days[2].tempmax - 32) * 5)/9) + "°C";
+                $("#lowAndHighTemp3").text(((days[3].tempmin - 32) * 5)/9 + "°C" + "-" + ((days[3].tempmax - 32) * 5)/9) + "°C";
+                $("#lowAndHighTemp4").text(((days[4].tempmin - 32) * 5)/9 + "°C" + "-" + ((days[4].tempmax - 32) * 5)/9) + "°C";
+                $("#lowAndHighTemp5").text(((days[5].tempmin - 32) * 5)/9 + "°C" + "-" + ((days[5].tempmax - 32) * 5)/9) + "°C";
             }
         }
         
@@ -257,6 +257,10 @@
             fetch("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + cityName + "?unitGroup=us&include=current&key=Y3Z2W6U2PPS3EZFMEV75UED6U&contentType=json")
               .then(response => response.json())
               .then(response => {
+                // make a reference to the API's "day" array
+                let days = response.days;
+                let currentConditions = response.currentConditions;
+
                 // Allow the toggle to change.
                 $("#checkbox").removeAttr('disabled');
 
@@ -269,7 +273,7 @@
                 ///////////////////////////
                 // GET API INFO
                 ///////////////////////////
-                address = response.resolvedAddress;
+                /*address = response.resolvedAddress;
                 chanceOfRain = response.currentConditions.precipprob;
                 cloudCoverage = response.currentConditions.cloudcover;
                 day1TempMax = response.days[1].tempmax;
@@ -329,29 +333,29 @@
                 temperatureApparentC = Math.round(((temperatureApparent - 32) * 5)/9) + "°C";
                 temperatureApparentF = Math.round(temperatureApparent) + "°F";
                 temperatureC = Math.round(((temperature - 32) * 5)/9) + "°C";
-                temperatureF = Math.round(temperature) + "°F";
+                temperatureF = Math.round(temperature) + "°F";*/
 
                 ///////////////////////////
                 // ADD API INFO TO GRID
                 ///////////////////////////
-                $("#humidityNum").text(Math.round(humidity) + "% ");
+                $("#humidityNum").text(Math.round(currentConditions.humidity) + "% ");
                 $("#humidityWord").text(" Humidity");
                 $("#location").text(address);
-                $("#precipitation").text(chanceOfRain + "%");
+                $("#precipitation").text(currentConditions.precipprob + "%");
                 $('#waterSymbol').attr("src",'waterDrop.jpg');
-                $('#weatherImage').attr("src", icon + ".png");
+                $('#weatherImage').attr("src", currentConditions.icon + ".png");
                 $('#windSymbol').attr("src", "wind.png");
 
                 // Default to adding all celcius temperatures.
-                $("#actualTemp").text(temperatureC);
-                $("#feelsLikeTemp").text("Feels like:" + temperatureApparentC);
-                $("#lowAndHighTemp").text("Low: " + minTemperatureC + " - High: " + maxTemperatureC);
-                $("#lowAndHighTemp1").text(day1TempMinC + "-" + day1TempMaxC);
-                $("#lowAndHighTemp2").text(day2TempMinC + "-" + day2TempMaxC);
-                $("#lowAndHighTemp3").text(day3TempMinC + "-" + day3TempMaxC);
-                $("#lowAndHighTemp4").text(day4TempMinC + "-" + day4TempMaxC);
-                $("#lowAndHighTemp5").text(day5TempMinC + "-" + day5TempMaxC);
-                $("#windSpeed").text(Math.round((windSpeed * 3.6)) + "Km/hr"); 
+                $("#actualTemp").text(Math.round(((currentConditions.temp - 32) * 5)/9) + "°C");
+                $("#feelsLikeTemp").text("Feels like:" + Math.round(((currentConditions.feelslike - 32) * 5)/9) + "°C");
+                $("#lowAndHighTemp").text("Low: " + Math.round(days[0].tempmin) + "°C" + " - High: " + Math.round(days[0].tempmax) + "°C"); 
+                $("#lowAndHighTemp1").text(Math.round(((days[1].tempmin - 32) * 5)/9) + "°C" + "-" + Math.round(((days[1].tempmax - 32) * 5)/9) + "°C");
+                $("#lowAndHighTemp2").text(Math.round(((days[2].tempmin - 32) * 5)/9) + "°C" + "-" + Math.round(((days[2].tempmax - 32) * 5)/9) + "°C");
+                $("#lowAndHighTemp3").text(Math.round(((days[3].tempmin - 32) * 5)/9) + "°C" + "-" + Math.round(((days[3].tempmax - 32) * 5)/9) + "°C");
+                $("#lowAndHighTemp4").text(Math.round(((days[4].tempmin - 32) * 5)/9) + "°C" + "-" + Math.round(((days[4].tempmax - 32) * 5)/9) + "°C");
+                $("#lowAndHighTemp5").text(Math.round(((days[5].tempmin - 32) * 5)/9) + "°C" + "-" + Math.round(((days[5].tempmax - 32) * 5)/9) + "°C");
+                $("#windSpeed").text(Math.round((currentConditions.windspeed * 3.6)) + "Km/hr");
 
                 ////////////////////////////////
                 // ADD FUTURE API INFO TO GRID
@@ -367,11 +371,11 @@
                 }
 
                 // Set the icon images.
-                $("#futureWeatherImage1").attr("src", icon1 + '.png');
-                $("#futureWeatherImage2").attr("src", icon2 + '.png');
-                $("#futureWeatherImage3").attr("src", icon3 + '.png');
-                $("#futureWeatherImage4").attr("src", icon4 + '.png');
-                $("#futureWeatherImage5").attr("src", icon5 + '.png');
+                $("#futureWeatherImage1").attr("src", days[2].icon + '.png');
+                $("#futureWeatherImage2").attr("src", days[3].icon + '.png');
+                $("#futureWeatherImage3").attr("src", days[4].icon + '.png');
+                $("#futureWeatherImage4").attr("src", days[5].icon + '.png');
+                $("#futureWeatherImage5").attr("src", days[6].icon + '.png');
 
               // Catch API errors.
               }).catch(err => alert("Please enter valid latitude, longitude, city name, or zip code!"));
